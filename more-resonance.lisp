@@ -198,6 +198,9 @@
 			   (second (first string-list))))
 		   (keyed-sympathy-calculator note (rest string-list))))))
 
+(defun symp-rating (note-name octave)
+  (length (sympathy-calculator (note-to-freq note-name octave) open-strings)))
+
 (defun violin-resonance-calculator (note-name octave)
   (keyed-sympathy-calculator (note-to-freq note-name octave)
 			     violin-open-strings))
@@ -205,6 +208,48 @@
 (defun violin (note-name octave) ;(violin 'a 3)
   (keyed-sympathy-calculator (note-to-freq note-name octave)
 			     violin-open-strings))
+
+;;;;Calculate most resonant note on the violin
+(defvar most-resonant-note '(10 (note octave)))
+
+(defvar notes '(C C# D D# E F F# G G# A Bb B))
+
+(defvar octaves '(3 4 5 6 7 8 9))
+
+;(defun most-resonant-check (note-list octave-list)
+ ; (cond ((null octave-list) most-resonant-note)
+;	((null note-list) (most-resonant-check notes (rest octave-list)))
+;	((> (symp-rating (first note-list) (first octave-list))
+;	    (first most-resonant-note))
+;	 (progn (setq most-resonant-note '((symp-rating (first note-list)
+;					    (first octave-list))
+;					   (first note-list)
+;					   (first octave-list)))
+;		(most-resonant-check (rest note-list) octave-list)))
+;	(t (most-resonant-check (rest note-list) octave-list))))
+
+;)))))))))
+;(defun most-resonant ()
+ ;  (setq most-resonant-note '(1 (note octave)))
+  ; (most-resonant-check (member 'g notes) octaves))
+					   
+  ;;;;loop for notes and octaves
+  ;;;;collect (symp-rating, note octave)
+  ;;;;do reduce'#lambda something to find the max
+  ;;;;of sympratings, return note/octave
+
+  ;;;(rest (assoc (max (mapcar #'first (loop for notes and octaves))
+					; (loop for notes and octaves)
+
+
+(defun most-resonant-loop (note-list octave-list)
+  (loop for octave in octave-list
+	do (loop for note in note-list
+		collect (list note octave))))
+
+
+
+       
 ;;;;--------------------------------------
 ;;;;Web app
 
@@ -222,3 +267,6 @@
 
 ;;;;scheme/lilypond extension that turns notes gray if they're resonant
 ;-should be pretty friendly 
+
+
+;;;A4 played on the G string may be the most resonant note on the violin
